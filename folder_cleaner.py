@@ -4,9 +4,22 @@
 ##### for Python 3
 #####
 
+from subprocess import check_output # Using this import just to install the dependencies if not.
+
+# I will only use my two libraries filecenter and lifeeasy and will not import anything else after they are installed.
+
 # IMPORTS
-import tools.file_info as file_info
-import tools.lifeeasy as lifeeasy
+try:
+    import filecenter # Both are my libraries
+    import lifeeasy
+except:
+    print('It is the first time launching the program')
+    print('Installing the dependencies...')
+    command_output = check_output(["pip", "install", "filecenter", "lifeeasy"], universal_newlines=True)
+    import filecenter
+    import lifeeasy
+    print('Successfully installed the dependencies!')
+    lifeeasy.sleep(2)
 
 # GLOBAL VARIABLES DECLARATION
 cleaning_dir = ''
@@ -29,22 +42,22 @@ def start():
     cleaning_dir = input('> ')
     if cleaning_dir.lower() == 'cancel' or cleaning_dir.lower() == 'stop' or cleaning_dir.lower() == 'quit' or cleaning_dir.lower() == 'exit':
         goodbye(nothing=True)
-    elif file_info.isdir(cleaning_dir):
+    elif filecenter.isdir(cleaning_dir):
         if cleaning_dir[-1] != '/' or cleaning_dir[-1] != '\\':
-            if file_info.os_name == 'nt':
+            if filecenter.os_name() == 'nt':
                 cleaning_dir = cleaning_dir + '\\'
             else:
                 cleaning_dir = cleaning_dir + '/'
 
-        for _ in file_info.files_in_dir(cleaning_dir):
+        for _ in filecenter.files_in_dir(cleaning_dir):
             number_of_items += 1
 
         destination_dir_name = 'Cleaned'
-        while file_info.exists(cleaning_dir + destination_dir_name):
+        while filecenter.exists(cleaning_dir + destination_dir_name):
             destination_dir_name = destination_dir_name + ' ' + str(unique_number)
             unique_number += 1
         destination_dir = cleaning_dir + destination_dir_name
-        file_info.make_dir(destination_dir)
+        filecenter.make_dir(destination_dir)
         decide_mode()
     else:
         lifeeasy.display_action('It seems like you mistyped the path', delay=0.1)
@@ -84,7 +97,7 @@ def decide_mode():
 def nosort():
     global number_of_moved_items
     lifeeasy.display_body(['Chosen mode: No Sorting', 'Completion: 0%'])
-    list_of_files_in_cleaning_dir = file_info.files_in_dir(cleaning_dir)
+    list_of_files_in_cleaning_dir = filecenter.files_in_dir(cleaning_dir)
     lifeeasy.display_body(['Chosen mode: No Sorting', 'Completion: 1%'])
     completion = 0
     for file in list_of_files_in_cleaning_dir:
@@ -94,7 +107,7 @@ def nosort():
             continue
         if file == destination_dir_name:
             continue
-        file_info.move(cleaning_dir + file, destination_dir)
+        filecenter.move(cleaning_dir + file, destination_dir)
         number_of_moved_items += 1
     lifeeasy.display_body(['Chosen mode: No Sorting', 'Completion: 100%'])
     goodbye()
@@ -133,7 +146,7 @@ def sort_by_type():
     Other = []
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 2%'])
 
-    list_of_files_in_cleaning_dir = file_info.files_in_dir(cleaning_dir)
+    list_of_files_in_cleaning_dir = filecenter.files_in_dir(cleaning_dir)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 5%'])
     completion = 0
     for file in list_of_files_in_cleaning_dir:
@@ -143,7 +156,7 @@ def sort_by_type():
             continue
         if file == destination_dir_name:
             continue
-        file_type = file_info.type_from_extension(file_info.extension_from_base(file))
+        file_type = filecenter.type_from_extension(filecenter.extension_from_base(file))
         if file_type == 'Archive':
             Archives.append(file)
         elif file_type == 'Audio':
@@ -198,129 +211,129 @@ def sort_by_type():
 
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 76%'])
     if len(Archives) != 0:
-        archives_path = file_info.make_dir(destination_dir + '/Archives')
+        archives_path = filecenter.make_dir(destination_dir + '/Archives')
         for file in Archives:
-            file_info.move(cleaning_dir + file, archives_path)
+            filecenter.move(cleaning_dir + file, archives_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 77%'])
     if len(Audios) != 0:
-        Audios_path = file_info.make_dir(destination_dir + '/Audios')
+        Audios_path = filecenter.make_dir(destination_dir + '/Audios')
         for file in Audios:
-            file_info.move(cleaning_dir + file, Audios_path)
+            filecenter.move(cleaning_dir + file, Audios_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 78%'])
     if len(Backups) != 0:
-        Backups_path = file_info.make_dir(destination_dir + '/Backups')
+        Backups_path = filecenter.make_dir(destination_dir + '/Backups')
         for file in Backups:
-            file_info.move(cleaning_dir + file, Backups_path)
+            filecenter.move(cleaning_dir + file, Backups_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 79%'])
     if len(eBooks) != 0:
-        eBooks_path = file_info.make_dir(destination_dir + '/eBooks')
+        eBooks_path = filecenter.make_dir(destination_dir + '/eBooks')
         for file in eBooks:
-            file_info.move(cleaning_dir + file, eBooks_path)
+            filecenter.move(cleaning_dir + file, eBooks_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 80%'])
     if len(Database_Files) != 0:
-        Database_Files_path = file_info.make_dir(destination_dir + '/Database Files')
+        Database_Files_path = filecenter.make_dir(destination_dir + '/Database Files')
         for file in Database_Files:
-            file_info.move(cleaning_dir + file, Database_Files_path)
+            filecenter.move(cleaning_dir + file, Database_Files_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 81%'])
     if len(Developers) != 0:
-        Developers_path = file_info.make_dir(destination_dir + '/Developers')
+        Developers_path = filecenter.make_dir(destination_dir + '/Developers')
         for file in Developers:
-            file_info.move(cleaning_dir + file, Developers_path)
+            filecenter.move(cleaning_dir + file, Developers_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 82%'])
     if len(Disk_Images) != 0:
-        Disk_Images_path = file_info.make_dir(destination_dir + '/Disk Images')
+        Disk_Images_path = filecenter.make_dir(destination_dir + '/Disk Images')
         for file in Disk_Images:
-            file_info.move(cleaning_dir + file, Disk_Images_path)
+            filecenter.move(cleaning_dir + file, Disk_Images_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 83%'])
     if len(Encoded_Files) != 0:
-        Encoded_Files_path = file_info.make_dir(destination_dir + '/Encoded Files')
+        Encoded_Files_path = filecenter.make_dir(destination_dir + '/Encoded Files')
         for file in Encoded_Files:
-            file_info.move(cleaning_dir + file, Encoded_Files_path)
+            filecenter.move(cleaning_dir + file, Encoded_Files_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 84%'])
     if len(ApplicationsèExecutables) != 0:
-        ApplicationsèExecutables_path = file_info.make_dir(destination_dir + '/Applications & Executables')
+        ApplicationsèExecutables_path = filecenter.make_dir(destination_dir + '/Applications & Executables')
         for file in ApplicationsèExecutables:
-            file_info.move(cleaning_dir + file, ApplicationsèExecutables_path)
+            filecenter.move(cleaning_dir + file, ApplicationsèExecutables_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 85%'])
     if len(Fonts) != 0:
-        Fonts_path = file_info.make_dir(destination_dir + '/Fonts')
+        Fonts_path = filecenter.make_dir(destination_dir + '/Fonts')
         for file in Fonts:
-            file_info.move(cleaning_dir + file, Fonts_path)
+            filecenter.move(cleaning_dir + file, Fonts_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 86%'])
     if len(Images_3D) != 0:
-        Images_3D_path = file_info.make_dir(destination_dir + '/3D Images')
+        Images_3D_path = filecenter.make_dir(destination_dir + '/3D Images')
         for file in Images_3D:
-            file_info.move(cleaning_dir + file, Images_3D_path)
+            filecenter.move(cleaning_dir + file, Images_3D_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 87%'])
     if len(Plugins) != 0:
-        Plugins_path = file_info.make_dir(destination_dir + '/Plugins')
+        Plugins_path = filecenter.make_dir(destination_dir + '/Plugins')
         for file in Plugins:
-            file_info.move(cleaning_dir + file, Plugins_path)
+            filecenter.move(cleaning_dir + file, Plugins_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 88%'])
     if len(PresetsèSettings) != 0:
-        PresetsèSettings_path = file_info.make_dir(destination_dir + '/Presets & Settings')
+        PresetsèSettings_path = filecenter.make_dir(destination_dir + '/Presets & Settings')
         for file in PresetsèSettings:
-            file_info.move(cleaning_dir + file, PresetsèSettings_path)
+            filecenter.move(cleaning_dir + file, PresetsèSettings_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 89%'])
     if len(Images) != 0:
-        Images_path = file_info.make_dir(destination_dir + '/Images')
+        Images_path = filecenter.make_dir(destination_dir + '/Images')
         for file in Images:
-            file_info.move(cleaning_dir + file, Images_path)
+            filecenter.move(cleaning_dir + file, Images_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 90%'])
     if len(Raw_Images) != 0:
-        Raw_Images_path = file_info.make_dir(destination_dir + '/Raw Images')
+        Raw_Images_path = filecenter.make_dir(destination_dir + '/Raw Images')
         for file in Raw_Images:
-            file_info.move(cleaning_dir + file, Raw_Images_path)
+            filecenter.move(cleaning_dir + file, Raw_Images_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 91%'])
     if len(ROMèGame_Files) != 0:
-        ROMèGame_Files_path = file_info.make_dir(destination_dir + '/ROM & Game Files')
+        ROMèGame_Files_path = filecenter.make_dir(destination_dir + '/ROM & Game Files')
         for file in ROMèGame_Files:
-            file_info.move(cleaning_dir + file, ROMèGame_Files_path)
+            filecenter.move(cleaning_dir + file, ROMèGame_Files_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 92%'])
     if len(Spreadsheets) != 0:
-        Spreadsheets_path = file_info.make_dir(destination_dir + '/Spreadsheets')
+        Spreadsheets_path = filecenter.make_dir(destination_dir + '/Spreadsheets')
         for file in Spreadsheets:
-            file_info.move(cleaning_dir + file, Spreadsheets_path)
+            filecenter.move(cleaning_dir + file, Spreadsheets_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 93%'])
     if len(System_Files) != 0:
-        System_Files_path = file_info.make_dir(destination_dir + '/System Files')
+        System_Files_path = filecenter.make_dir(destination_dir + '/System Files')
         for file in System_Files:
-            file_info.move(cleaning_dir + file, System_Files_path)
+            filecenter.move(cleaning_dir + file, System_Files_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 94%'])
     if len(Text_FilesèDocuments) != 0:
-        Text_FilesèDocuments_path = file_info.make_dir(destination_dir + '/Text Files & Documents')
+        Text_FilesèDocuments_path = filecenter.make_dir(destination_dir + '/Text Files & Documents')
         for file in Text_FilesèDocuments:
-            file_info.move(cleaning_dir + file, Text_FilesèDocuments_path)
+            filecenter.move(cleaning_dir + file, Text_FilesèDocuments_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 95%'])
     if len(Vector_Images) != 0:
-        Vector_Images_path = file_info.make_dir(destination_dir + '/Vector Images')
+        Vector_Images_path = filecenter.make_dir(destination_dir + '/Vector Images')
         for file in Vector_Images:
-            file_info.move(cleaning_dir + file, Vector_Images_path)
+            filecenter.move(cleaning_dir + file, Vector_Images_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 96%'])
     if len(Videos) != 0:
-        Videos_path = file_info.make_dir(destination_dir + '/Videos')
+        Videos_path = filecenter.make_dir(destination_dir + '/Videos')
         for file in Videos:
-            file_info.move(cleaning_dir + file, Videos_path)
+            filecenter.move(cleaning_dir + file, Videos_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 97%'])
     if len(Web_Documents) != 0:
-        Web_Documents_path = file_info.make_dir(destination_dir + '/Web Documents')
+        Web_Documents_path = filecenter.make_dir(destination_dir + '/Web Documents')
         for file in Web_Documents:
-            file_info.move(cleaning_dir + file, Web_Documents_path)
+            filecenter.move(cleaning_dir + file, Web_Documents_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 98%'])
     if len(Folders) != 0:
-        Folders_path = file_info.make_dir(destination_dir + '/Folders')
+        Folders_path = filecenter.make_dir(destination_dir + '/Folders')
         for file in Folders:
-            file_info.move(cleaning_dir + file, Folders_path)
+            filecenter.move(cleaning_dir + file, Folders_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 99%'])
     if len(Other) != 0:
-        Other_path = file_info.make_dir(destination_dir + '/Other')
+        Other_path = filecenter.make_dir(destination_dir + '/Other')
         for file in Other:
-            file_info.move(cleaning_dir + file, Other_path)
+            filecenter.move(cleaning_dir + file, Other_path)
     lifeeasy.display_body(['Chosen mode: Type Sorting', 'Completion: 100%'])
     goodbye()
 
 def create_information():
-    lifeeasy.change_working_dir(file_info.get_correct_path(destination_dir))
+    lifeeasy.change_working_dir(filecenter.get_correct_path(destination_dir))
     print(destination_dir)
     lifeeasy.sleep(3)
     information_file = open('cleaning_information.txt', 'w+')
@@ -344,17 +357,17 @@ def create_information():
 
 def goodbye(nothing=False):
     if nothing == False:
-        lifeeasy.stop_multi_thread_display()
+        lifeeasy.stop_display()
         lifeeasy.display_action('Creating the information file')
         create_information()
         lifeeasy.display_action('Opening the folder', delay=0.1)
-        file_info.open(cleaning_dir)
+        filecenter.open(cleaning_dir)
         lifeeasy.display_action('Opening your the result folder', delay=0.1)
-        file_info.open(destination_dir)
+        filecenter.open(destination_dir)
     lifeeasy.clear()
     lifeeasy.display_title("Thank you for using this program")
     lifeeasy.display_body(['Folder Cleaner', '©Anime no Sekai - 2020', ''])
     lifeeasy.display()
-    lifeeasy.stop_multi_thread_display()
+    lifeeasy.stop_display()
 
 start()
