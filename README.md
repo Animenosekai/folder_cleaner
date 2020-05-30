@@ -28,8 +28,8 @@
  - The program will do everything else automatically!
  
  ### Available organizing mode
-- nosort > nothing will be sorted in the cleaned up folder.
-- type   > each file will be sorted and put in a folder according to its type.
+- `nosort` > nothing will be sorted in the cleaned up folder.
+- `type`   > each file will be sorted and put in a folder according to its type.
 
 ### Issues
 If you have any issue, feel free to go to the issue section of this repository and report it.
