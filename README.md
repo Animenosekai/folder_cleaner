@@ -1,6 +1,8 @@
 # folder_cleaner
  A Python script that lets you organize and clean your folders quickly and easily!
  
+ [![PyPI version](https://badge.fury.io/py/folderclean.svg)](https://badge.fury.io/py/folderclean)
+ 
  ### Installation
  
  #### WITH PIP
