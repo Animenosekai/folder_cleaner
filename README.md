@@ -2,6 +2,11 @@
  A Python script that lets you organize and clean your folders quickly and easily!
  
  ### Installation
+ 
+ #### WITH PIP
+ - Run `pip install folderclean` in your command-prompt/terminal
+ 
+ #### MANUALLY
  - Download or clone this repository
  - Unzip if needed
  - You can now directly open `folder_cleaner.py` and start organizing your folders!
@@ -23,6 +28,11 @@
  ### Usage
  Folder Cleaner (for Python) usage is very simple.
  
+ #### IF INSTALLED WITH PIP 
+ - Open your command-prompt/terminal in the folder you want to clean (or `cd` into it)
+ - Run `folderclean`
+ 
+ #### IF INSTALLED MANUALLY
  - Open the file (with Python) and you will be prompted to enter the path of the folder you want to review (tips: you can also simply drag and drop the folder into the terminal).
  - Type the desired organizing mode and press `enter` to continue.
  - The program will do everything else automatically!
