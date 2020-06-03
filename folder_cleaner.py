@@ -38,8 +38,11 @@ def start():
     global number_of_items
     
     lifeeasy.clear()
-    print("What's the folder you want to clean today?")
-    cleaning_dir = input('> ')
+    if __file__ == '__main__':
+        print("What's the folder you want to clean today?")
+        cleaning_dir = input('> ')
+    else:
+        cleaning_dir = lifeeasy.working_dir()
     if cleaning_dir.lower() == 'cancel' or cleaning_dir.lower() == 'stop' or cleaning_dir.lower() == 'quit' or cleaning_dir.lower() == 'exit':
         goodbye(nothing=True)
     elif filecenter.isdir(cleaning_dir):
@@ -370,4 +373,5 @@ def goodbye(nothing=False):
     lifeeasy.display()
     lifeeasy.stop_display()
 
-start()
+if __file__ == '__main__':
+    start()
